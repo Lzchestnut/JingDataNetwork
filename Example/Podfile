@@ -1,0 +1,7 @@
+use_frameworks!
+
+target 'JingDataNetwork_Example' do
+    
+  pod 'JingDataNetwork', :path => '../'
+
+end

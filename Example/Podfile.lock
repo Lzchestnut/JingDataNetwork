@@ -1,0 +1,51 @@
+PODS:
+  - Alamofire (4.9.1)
+  - JingDataNetwork (1.0.0):
+    - Moya
+    - RxCocoa (= 6.0.0-rc.2)
+    - RxSwift (= 6.0.0-rc.2)
+    - SwiftyJSON (= 5.0.0)
+  - Moya (13.0.1):
+    - Moya/Core (= 13.0.1)
+  - Moya/Core (13.0.1):
+    - Alamofire (~> 4.1)
+    - Result (~> 4.1)
+  - Result (4.1.0)
+  - RxCocoa (6.0.0-rc.2):
+    - RxRelay (= 6.0.0-rc.2)
+    - RxSwift (= 6.0.0-rc.2)
+  - RxRelay (6.0.0-rc.2):
+    - RxSwift (= 6.0.0-rc.2)
+  - RxSwift (6.0.0-rc.2)
+  - SwiftyJSON (5.0.0)
+
+DEPENDENCIES:
+  - JingDataNetwork (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - Moya
+    - Result
+    - RxCocoa
+    - RxRelay
+    - RxSwift
+    - SwiftyJSON
+
+EXTERNAL SOURCES:
+  JingDataNetwork:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  JingDataNetwork: 15ae5d821bac2b4334794557cd2cebdb37fb18df
+  Moya: f4a4b80ff2f8a4ffc208dfb31cd91636622fee6e
+  Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
+  RxCocoa: 38445a25751be5907f52f7ea02c137f52ce2e7f2
+  RxRelay: b9e2483e83f46e4e7bf1234c6fe418e5c2eaf825
+  RxSwift: ada35be6643bedf6881cdbd6bbfb27aeea527670
+  SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
+
+PODFILE CHECKSUM: e8a69c060bd9f88d8ed1fa7b44617210daa44ac4
+
+COCOAPODS: 1.9.3

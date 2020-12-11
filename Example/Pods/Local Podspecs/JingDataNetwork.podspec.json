@@ -1,0 +1,35 @@
+{
+  "name": "JingDataNetwork",
+  "version": "1.0.0",
+  "summary": "UU跑腿网络请求公共组件库",
+  "homepage": "https://github.com/tianziyao/JingDataNetwork",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "tianziyao": "tianziyao@jingdata.com"
+  },
+  "source": {
+    "git": "https://github.com/tianziyao/JingDataNetwork.git",
+    "tag": "1.0.0"
+  },
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source_files": "JingDataNetwork/Classes/**/*",
+  "dependencies": {
+    "Moya": [
+
+    ],
+    "RxSwift": [
+      "6.0.0-rc.2"
+    ],
+    "RxCocoa": [
+      "6.0.0-rc.2"
+    ],
+    "SwiftyJSON": [
+      "5.0.0"
+    ]
+  }
+}
