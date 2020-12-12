@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'JingDataNetwork'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'UU跑腿网络请求公共组件库-Swift'
 
   s.homepage         = 'http://uugit.uupt.com/zhangwenbin/JingDataNetwork.git'

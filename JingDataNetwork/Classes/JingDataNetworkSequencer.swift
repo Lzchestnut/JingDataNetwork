@@ -95,22 +95,20 @@ public class JingDataNetworkDifferentMapHandlerSequencer {
             self.semaphore.wait()
             JingDataNetworkManager.base(api: api).bind(C.self)
             .single(progress: progress, test: test)
-            .observeOn(MainScheduler.instance)
+            .observe(on:MainScheduler.instance)
             .subscribe(onSuccess: { [weak self] (data) in
-                self?.data = data
-                self?.results.append(data)
-                self?.requestSuccess = true
-                success(data)
-                self?.semaphore.signal()
-                }, onError: { [weak self] (e) in
+                    self?.data = data
+                    self?.results.append(data)
+                    self?.requestSuccess = true
+                    success(data)
+                    self?.semaphore.signal()
+                }, onFailure: { [weak self] (e) in
                     self?.requestSuccess = false
                     error?(e)
                     self?.semaphore.signal()
             })
             .disposed(by: self.bag)
-
             self.semaphore.wait()
-            // print("xxxxxxxxx")
             self.semaphore.signal()
         }
         blocks.append(block)

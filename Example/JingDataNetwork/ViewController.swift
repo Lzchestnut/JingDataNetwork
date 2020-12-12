@@ -31,17 +31,19 @@ class ViewController: UIViewController {
     func base() {
         
         // 获取 response
-        JingDataNetworkManager.base(api: TestApi.m)
+        JingDataNetworkManager.base(api: ApiService.user(userId: ""))
             .bind(BaseResponseHandler.self)
             .single()
             .observe(on: MainScheduler.instance)
-            .subscribe(onSuccess: { (response) in
-                print(response + "111111111")
+            .subscribe(onSuccess: { (data) in
+                print(data + "11111111")
+            }, onFailure: { (error) in
+                print(error.localizedDescription + "error")
             })
             .disposed(by: bag)
         
         // 获取 response.data
-        JingDataNetworkManager.base(api: TestApi.m)
+        JingDataNetworkManager.base(api: ApiService.userQuery(keyword: ""))
             .bind(BaseDataResponseHandler<BaseDataResponse>.self)
             .single()
             .observe(on: MainScheduler.instance)
@@ -51,7 +53,7 @@ class ViewController: UIViewController {
             .disposed(by: bag)
         
         // 获取 response.listData
-        JingDataNetworkManager.base(api: TestApi.m)
+        JingDataNetworkManager.base(api: ApiService.login(username: "", password: ""))
             .bind(BaseListDataResponseHandler<BaseListDataResponse>.self)
             .single()
             .observe(on: MainScheduler.instance)
@@ -63,13 +65,13 @@ class ViewController: UIViewController {
     
     func sequencerSameModel() {
         let sequencer = JingDataNetworkSequencer.sameHandler(BaseListDataResponseHandler<BaseListDataResponse>.self)
-        sequencer.zip(apis: [TestApi.m, Test2Api.n])
+        sequencer.zip(apis: [ApiService.userQuery(keyword: ""), ApiService.user(userId: "")])
             .subscribe(onSuccess: { (responseList) in
                 print(responseList.map({$0.listData}))
             })
         .disposed(by: bag)
         
-        sequencer.map(apis: [TestApi.m, Test2Api.n])
+        sequencer.map(apis: [ApiService.userQuery(keyword: ""), ApiService.user(userId: "")])
             .subscribe(onNext: { (response) in
                 print(response.listData)
             })
@@ -78,18 +80,18 @@ class ViewController: UIViewController {
     
     func sequencerDifferentMapResponse() {
         let sequencer = JingDataNetworkSequencer.differentHandlerMap
-        sequencer.next(bind: BaseResponseHandler.self, api: {TestApi.m}, success: { (response) in
+        sequencer.next(bind: BaseResponseHandler.self, api: {ApiService.userQuery(keyword: "")}, success: { (response) in
             print(response)
         })
-        sequencer.next(bind: BaseListDataResponseHandler<BaseListDataResponse>.self, with: { (data: String) -> TestApi? in
+        sequencer.next(bind: BaseListDataResponseHandler<BaseListDataResponse>.self, with: { (data: String) -> ApiService? in
             print(data)
-            return .n
+            return .userQuery(keyword: "")
         }, success: { (response) in
             print(response)
         })
-        sequencer.next(bind: BaseListDataResponseHandler<BaseListDataResponse>.self, with: { (data: BaseListDataResponse) -> Test2Api? in
+        sequencer.next(bind: BaseListDataResponseHandler<BaseListDataResponse>.self, with: { (data: BaseListDataResponse) -> ApiService? in
             print(data)
-            return .n
+            return .userQuery(keyword: "")
         }, success: { (response) in
             print(response)
         })
@@ -102,8 +104,8 @@ class ViewController: UIViewController {
 
     
     func sequencerDifferentZipResponse() {
-        let task1 = JingDataNetworkTask(api: TestApi.m, handler: BaseResponseHandler.self)
-        let task2 = JingDataNetworkTask(api: Test2Api.n, handler: BaseListDataResponseHandler<BaseListDataResponse>.self)
+        let task1 = JingDataNetworkTask(api: ApiService.userQuery(keyword: ""), handler: BaseResponseHandler.self)
+        let task2 = JingDataNetworkTask(api: ApiService.login(username: "", password: ""), handler: BaseListDataResponseHandler<BaseListDataResponse>.self)
         let sequencer = JingDataNetworkSequencer.differentHandlerZip
         sequencer.zip(task1, task2).subscribe(onSuccess: { (data1, data2) in
             print(data1, data2)

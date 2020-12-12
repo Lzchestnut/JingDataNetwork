@@ -10,83 +10,61 @@ import Foundation
 import Moya
 import SwiftyJSON
 
-
-enum Test2Api: TargetType {
-    
-    case n
-    
-    var baseURL: URL {
-        return URL.init(string: "https://segmentfault.com/a/1190000003822838")!
-    }
-    
-    var path: String {
-        return ""
-    }
-    
-    var method: Moya.Method {
-        return .get
-    }
-    
-    var sampleData: Data {
-        let dict: [String : Any] = [
-            "code": 0,
-            "data": ["age": 19, "name": "tian"]
-        ]
-        let json = JSON.init(dict).description
-        return json.data(using: .utf8)!
-    }
-    
-    var task: Task {
-        return .requestPlain
-    }
-    
-    var headers: [String : String]? {
-        return nil
-    }
-    
+enum ApiService {
+    case login(username:String,password:String)
+    case user(userId:String)
+    case userQuery(keyword:String)
 }
 
-enum TestApi: TargetType {
-    
-    case m
-    case n
-    
+extension ApiService:TargetType{
+    // 定义请求的host
     var baseURL: URL {
-        return URL.init(string: "https://segmentfault.com/a/1190000003822838")!
+        return URL(string: "http://127.0.0.1:8080")!
     }
-    
+    // 定义请求的路径
     var path: String {
-        return ""
-    }
-    
-    var method: Moya.Method {
-        return .get
-    }
-    
-    var sampleData: Data {
-        var dict: [String : Any] = [:]
         switch self {
-        case .m:
-            dict = [
-                "code": 0,
-                "data": ["age": 19, "name": "tian"]
-            ]
-        default:
-            dict = [
-                "code": 30,
-                "data": ["age": 88, "name": "li"]
-            ]
+        case .login(_, _):
+            return "/account/login"
+        case .user(let userId):
+            return "user/\(userId)"
+        case .userQuery(_):
+            return "user/query"
         }
-        let json = JSON.init(dict).description
-        return json.data(using: .utf8)!
     }
-    
+    // 定义接口请求方式
+    var method: Moya.Method {
+        switch self {
+        case .login:
+            return .post
+        case .user,.userQuery:
+            return .get
+        }
+    }
+    // 定义模拟数据
+    var sampleData: Data {
+        switch self {
+        case .login(let username, _):
+            return "{\"username\": \"\(username)\", \"id\": 100}".data(using: String.Encoding.utf8)!
+        case .user(_):
+            return "{\"username\": \"Wiki\", \"id\": 100}".data(using: String.Encoding.utf8)!
+        case .userQuery(_):
+            return "{\"username\": \"Wiki\", \"id\": 100}".data(using: String.Encoding.utf8)!
+        }
+    }
+    // 构建参数
     var task: Task {
-        return .requestPlain
+        switch self {
+        case .login(let username, let passowrd):
+            return .requestParameters(parameters: ["username": username,"passowrd": passowrd], encoding: URLEncoding.default)
+        case .user(_):
+            return .requestPlain
+        case .userQuery(let keyword):
+            return .requestParameters(parameters: ["keyword": keyword], encoding: URLEncoding.default)
+        }
     }
-    
+    // 构建请求头部
     var headers: [String : String]? {
-        return nil
+        return ["Content-type": "application/json"]
     }
-    
 }
